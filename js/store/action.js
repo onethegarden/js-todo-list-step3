@@ -217,7 +217,6 @@ export const mutations = {
   },
 
   addMember: async (state, payload) => {
-    console.log(state.teamId);
     const addTeam = await api.addMember(state.teamId, payload);
     if (validateResult(addTeam)) {
       store.dispatch("loadKanban", state.teamId);

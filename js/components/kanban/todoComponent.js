@@ -1,4 +1,32 @@
-export const todoList = (member) =>
+const filterButtons = {
+  all: "전체보기",
+  priority: "우선 순위",
+  active: "해야할 일",
+  completed: "완료한 일",
+};
+
+const filterTodos = (todoList, filterType) => {
+  switch (filterType) {
+    case "completed":
+      return todoList.filter((todo) => {
+        return todo.isCompleted === true;
+      });
+
+    case "active":
+      return todoList.filter((todo) => {
+        return todo.isCompleted === false;
+      });
+
+    case "priority":
+      return todoList.sort((a, b) => {
+        return //로직
+      });
+    default:
+      return todoList;
+  }
+};
+
+export const todoList = (member, filterType) =>
   `
     <li class="todoapp-container" id=${member._id}>
         <h2>
@@ -12,7 +40,7 @@ export const todoList = (member) =>
             <ul class="todo-list">
             ${
               member.todoList.length !== 0
-                ? member.todoList
+                ? filterTodos(member.todoList, filterType)
                     .map((todo) => {
                       return todoComponent.listToDo(todo);
                     })
@@ -25,7 +53,14 @@ export const todoList = (member) =>
             <span class="todo-count">총 <strong>${
               member.todoList.length
             }</strong> 개</span>
-            ${todoComponent.filter}
+            
+            <ul class="filters">
+            ${Object.entries(filterButtons)
+              .map(([type, text]) => {
+                return todoComponent.filter(filterType, type, text);
+              })
+              .join("")}
+            </ul>
             <button class="clear-completed">모두 삭제</button>
           </div>
         </div>
@@ -76,19 +111,14 @@ export const todoComponent = {
   </li>
   `;
   },
-  filter: `
-  <ul class="filters">
+
+  filter: (filterType, type, text) => {
+    return `
   <li>
-    <a href="#all" class="selected">전체보기</a>
+    <a href="#${type}" ${
+      filterType === type ? ' class="selected"' : ""
+    }>${text}</a>
   </li>
-  <li>
-    <a href="#priority">우선 순위</a>
-  </li>
-  <li>
-    <a href="#active">해야할 일</a>
-  </li>
-  <li>
-    <a href="#completed">완료한 일</a>
-  </li>
-</ul>`,
+  `;
+  },
 };

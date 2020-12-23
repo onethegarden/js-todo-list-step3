@@ -121,12 +121,31 @@ const KanbanList = class extends Component {
     });
   };
 
+  toDoFilter = (e) => {
+    if (e.target.nodeName !== "A") return;
+    const todoClassName = e.target.getAttribute("href");
+    const buttonName = todoClassName.substring(1, todoClassName.length);
+
+    if (
+      buttonName !== "all" &&
+      buttonName !== "priority" &&
+      buttonName !== "active" &&
+      buttonName !== "completed"
+    )
+      return;
+    
+    store.dispatch("setFilterType", buttonName);
+  };
+
+  
+
   render() {
     if (!store.state.kanbanList.members) return;
+
     this.element.innerHTML = `
         ${store.state.kanbanList.members
           .map((member) => {
-            return todoList(member);
+            return todoList(member, store.state.filterType);
           })
           .join("")}
 
@@ -161,6 +180,10 @@ const KanbanList = class extends Component {
     //우선순위
     target.addEventListener("click", (e) => {
       this.setPriority(e);
+    });
+    //filter
+    target.addEventListener("click", (e) => {
+      this.toDoFilter(e);
     });
   }
 };
