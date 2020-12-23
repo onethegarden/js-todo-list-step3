@@ -28,7 +28,8 @@ UserNameInstance.render();
 
 store.dispatch('loadUsersToDos');
 */
-/*function App() {
+/*
+function App() {
   const $todoApps = document.querySelector('.todoapp-list-container')
   $todoApps.addEventListener('click', e => {
     const $target = e.target
@@ -39,7 +40,7 @@ store.dispatch('loadUsersToDos');
       $chipSelect.classList.remove('hidden')
     }
   })
-
+  
   const $addUserButton = document.querySelector('#add-user-button')
   $addUserButton.addEventListener('click', () => {
     const result = prompt('새로운 팀원 이름을 입력해주세요')
@@ -48,3 +49,15 @@ store.dispatch('loadUsersToDos');
 
 new App()
 */
+
+import store from './store/index.js';
+import KanbanList from './components/kanban/kanbanList.js';
+var searchParams = new URLSearchParams(location.search);
+
+
+const kanbanListInstance = new KanbanList();
+kanbanListInstance.render();
+const getTeamId = searchParams.get("teamId");
+
+store.dispatch('setTeamId', getTeamId);
+store.dispatch('loadKanban', getTeamId);

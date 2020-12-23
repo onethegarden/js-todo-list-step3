@@ -13,18 +13,18 @@ const TeamList = class extends Component {
     switch (e.target.nodeName) {
       case "BUTTON":
         this.addTeam();
-        return;
-        case "A":
-        console.log("a태그");
-        return;
+        break;
+      case "A":
+        alert(e.target.id);
+        break;
     }
   };
 
   addTeam = () => {
     const result = prompt("팀 이름을 입력해주세요");
-    
     store.dispatch('addTeam', { name: result });
   };
+
 
   render() {
     this.element.innerHTML = `
@@ -32,8 +32,8 @@ const TeamList = class extends Component {
           .map((team) => {
             return `
             <div class="team-card-container">
-              <a href="/#" class="card">
-                <div class="card-title" id = "${team._id}">
+              <a href="/kanban.html?teamId=${team._id}" class="card" id="${team._id}">
+                <div class="card-title" >
                   ${team.name}
                 </div>
               </a>

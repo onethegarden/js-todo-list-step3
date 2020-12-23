@@ -18,45 +18,9 @@ export const api = {
     return request(`${BASE_URL}/api/users/${userId}`, option.delete());
   },
 
-  //TODO
-  addToDo: (userId, contents) => {
-    return request(
-      `${BASE_URL}/api/users/${userId}/items`,
-      option.post(contents)
-    );
-  },
 
-  deleteToDo: (userId, itemId) => {
-    return request(
-      `${BASE_URL}/api/users/${userId}/items/${itemId}`,
-      option.delete()
-    );
-  },
+ 
 
-  editToDo: (userId, itemId, contents) => {
-    return request(
-      `${BASE_URL}/api/users/${userId}/items/${itemId}`,
-      option.put({ contents })
-    );
-  },
-
-  toggleToDo: (userId, itemId) => {
-    return request(
-      `${BASE_URL}/api/users/${userId}/items/${itemId}/toggle`,
-      option.put()
-    );
-  },
-
-  setPriorityToDo: (userId, itemId, priority) => {
-    return request(
-      `${BASE_URL}/api/users/${userId}/items/${itemId}/priority`,
-      option.put({ priority })
-    );
-  },
-
-  deleteAllToDo: (userId) => {
-    return request(`${BASE_URL}/api/users/${userId}/items/`, option.delete());
-  },
 
   //TEAM
   loadTeams: () => {
@@ -66,4 +30,58 @@ export const api = {
   addTeam: (teamName) => {
     return request(`${BASE_URL}/api/teams`, option.post(teamName));
   },
+
+  deleteTeam: (teamId) => {
+    return request(`${BASE_URL}/api/teams/${teamId}`, option.delete());
+  },
+
+  //KANBAN
+  loadKanban: (teamId) => {
+    return request(`${BASE_URL}/api/teams/${teamId}`);
+  },
+
+  addMember: (teamId, memberName) => {
+    return request(`${BASE_URL}/api/teams/${teamId}/members`, option.post(memberName));
+  },
+
+  //TODO
+  addToDo: (teamId, memberId, contents) => {
+    return request( ///api/teams/:teamId/members/:memberId/items
+      `${BASE_URL}/api/teams/${teamId}/members/${memberId}/items`,
+      option.post(contents)
+    );
+  },
+  
+  deleteToDo: (teamId, memberId, itemId) => {
+    return request(	
+      `${BASE_URL}/api/teams/${teamId}/members/${memberId}/items/${itemId}`,
+      option.delete()
+    );
+  },
+
+  toggleToDo: (teamId, memberId, itemId) => {
+    return request(
+      `${BASE_URL}/api/teams/${teamId}/members/${memberId}/items/${itemId}/toggle`,
+      option.put()
+    );
+  },
+  
+  editToDo: (teamId, memberId, itemId, contents)  => {
+    return request(
+      `${BASE_URL}/api/teams/${teamId}/members/${memberId}/items/${itemId}`,
+      option.put({ contents })
+    );
+  },
+
+  setPriorityToDo: (teamId, memberId, itemId, priority) => {
+    return request(
+      `${BASE_URL}/api/teams/${teamId}/members/${memberId}/items/${itemId}/priority`,
+      option.put({ priority })
+    );
+  },
+  
+  deleteAllToDo: (teamId, memberId) => {
+    return request(`${BASE_URL}/api/teams/${teamId}/members/${memberId}/items`, option.delete());
+  },
+
 };
